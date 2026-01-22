@@ -1,32 +1,29 @@
 using System.Diagnostics;
+using Liberty.Context;
 using Liberty.Models;
+using Liberty.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace Liberty.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController(AppDbContext _context) : Controller
     {
-        private readonly ILogger<HomeController> _logger;
-
-        public HomeController(ILogger<HomeController> logger)
+        public async Task<IActionResult> Index()
         {
-            _logger = logger;
-        }
+            var products = await _context.Products.Select(x => new ProductGetVM()
+            {
+                Id = x.Id,
+                Name = x.Name,
+                Description = x.Description,
+                ImagePath = x.ImagePath,
+                Price = x.Price,
+                Rating = x.Rating,
+                CategoryName = x.Category.Name
 
-        public IActionResult Index()
-        {
-            return View();
-        }
+            }).ToListAsync();
 
-        public IActionResult Privacy()
-        {
-            return View();
-        }
-
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            return View(products);
         }
     }
 }

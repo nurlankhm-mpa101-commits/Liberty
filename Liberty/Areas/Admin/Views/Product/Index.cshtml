@@ -1,0 +1,47 @@
+﻿@using Liberty.ViewModels
+@model List<ProductGetVM>
+
+<div class="container">
+	<div class="row">
+		<div class="col-2">
+			<a class="btn btn-success" asp-action="Create">Create</a>
+		</div>
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">Id</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Description</th>
+                    <th scope="col">ImagePath</th>
+                    <th scope="col">Price</th>
+                    <th scope="col">Rating</th>
+                    <th scope="col">CategoryId</th>
+                    <th scope="col">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var product in Model)
+                {
+                    <tr>
+                        <th scope="row">@product</th>
+                        <td>@product.Name</td>
+                        <td>@product.Description</td>
+                        <td><img src="/assets/images/@product.ImagePath" /></td>
+                        <td>@product.Price</td>
+                        <td>@product.Rating</td>
+                        <td>@product.CategoryName</td>
+                        <td>
+                            <a class="btn btn-warning"  asp-action="Update" asp-route-id="@product.Id">Update</a>
+                            <a class="btn btn-danger" asp-action="Delete" asp-route-id="@product.Id">Delete</a>
+                        </td>
+                        
+                    </tr>
+                }
+               
+                
+            </tbody>
+        </table>
+
+	</div>
+</div>
